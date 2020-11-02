@@ -4,6 +4,7 @@ import android.util.Log;
 
 import controller.Deck;
 import controller.EmptyDeckException;
+import controller.Hand;
 import model.Card;
 import model.Color;
 import model.Value;
@@ -32,16 +33,20 @@ public class BlackJackConsole {
         }
 
         Deck deck = new Deck(2);
-        Log.i(TAG, "Here is the deck "+ deck + "\n");
+        Hand hand = new Hand();
+        Log.i(TAG, "Your hand is currently : "+ hand + "\n");
         for (int i = 0; i < 3; i++){
             try{
-                Card c = deck.draw();
-                Log.i(TAG, "This card is a " + c + " worth " + c.getPoints() + " points");
+                hand.add(deck.draw());
             } catch (EmptyDeckException ex){
                 System.err.println(ex.getMessage());
                 System.exit(-1);
             }
         }
+        Log.i(TAG, "Your hand is currently : "+ hand + "\n");
+        hand.clear();
+        Log.i(TAG, "Your hand is currently : "+ hand + "\n");
+
     }
 
 }
