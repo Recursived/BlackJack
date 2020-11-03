@@ -44,6 +44,7 @@ public class BlackJackConsole {
             }
         }
         Log.i(TAG, "Your hand is currently : "+ hand + "\n");
+        Log.i(TAG, "The best score is: "+ hand.best() + "\n");
         hand.clear();
         Log.i(TAG, "Your hand is currently : "+ hand + "\n");
 

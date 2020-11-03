@@ -2,6 +2,7 @@ package controller;
 
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,58 +26,47 @@ public class Hand {
     public List<Integer> count(){
         List<Integer> lst = new LinkedList<>();
         Integer total = 0;
-        Integer total_2 = 0;
+        int nbAs = 0;
 
         for (Card c : cardList){
             if (c.getValueSymbole().equals("A")) {
-                total += c.getPoints(); //
-                total += c.getPoints() + 10; //
+                nbAs++;
             }
             total += c.getPoints();
-            total_2 += c.getPoints();
         }
 
-        if (!total.equals(total_2)){
-            lst.add(total);
-            lst.add(total_2);
-        } else {
+        if(total>0) {
             lst.add(total);
         }
+
+        for(int i=0;i<nbAs;i++){
+            total+=10;
+            lst.add(total);
+        }
+
         return lst;
     }
 
     public int best(){
         // On devrait installer jdk 1.8 pour les streams et les filters pour faire la fonction en une ligne
         List<Integer> points = count();
-        Integer max = 0;
+        int max = 0;
         for (Integer p: points){
             if (p <= 21 && max < p){
                 max = p;
             }
         }
-        return  max;
+        return max;
     }
 
     @Override
     public String toString() {
         // Affichage des cartes
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (Card c : cardList){
-            sb.append(c.toString());
-            sb.append(", ");
-        }
-        sb.deleteCharAt(sb.lastIndexOf(","));
-        sb.append("] : [");
-
-        // Affichage des scores
-        for (Integer i : count()){
-            sb.append(i.toString());
-            sb.append(", ");
-        }
-
-        sb.deleteCharAt(sb.lastIndexOf(","));
-        sb.append("]\n");
+        sb.append(Arrays.toString(cardList.toArray()));
+        sb.append(" : ");
+        sb.append(Arrays.toString(count().toArray()));
+        sb.append("\n");
 
         // TO-DO :  Affichage des scores possibles avec ces cartes
         return sb.toString();
