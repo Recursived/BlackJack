@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/config_menu_Item"
+        android:icon="@drawable/gear_icon"
+        android:title="@string/config_item"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_item_en_lang"
+        android:icon="@drawable/drapeau_en"
+        android:title="@string/menu_item_en_lang" />
+    <item
+        android:id="@+id/menu_item_fr_lang"
+        android:icon="@drawable/drapeau_fr"
+        android:title="@string/menu_item_fr_lang" />
+</menu>

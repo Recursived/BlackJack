@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BlackJack EN</string>
+    <string name="config_item">Options</string>
+    <string name="bankTitle">Bank</string>
+    <string name="playerTitle">Player</string>
+    <string name="bankScore">Bank score :</string>
+    <string name="playerScore">Player score :</string>
+    <string name="DrawButton">Draw card</string>
+    <string name="EndButton">No more card</string>
+    <string name="ResetButton">Reset</string>
+    <string name="NoMoreCardException">No more card in the deck</string>
+    <string name="DialogBoxTitle">Blackjack configuration</string>
+    <string name="GreenBackgroundchoice">Green bg</string>
+    <string name="DarkBackgroundchoice">Dark bg</string>
+    <string name="ResetChoiceDialog">Cancel</string>
+    <string name="ValidateChoiceDialog">Validate</string>
+    <string name="menu_item_en_lang">English</string>
+    <string name="menu_item_fr_lang">Français</string>
+</resources>

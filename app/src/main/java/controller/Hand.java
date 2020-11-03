@@ -39,8 +39,8 @@ public class Hand {
             lst.add(total);
         }
 
-        for(int i=0;i<nbAs;i++){
-            total+=10;
+        for(int i = 0; i <nbAs; i++){
+            total += 10;
             lst.add(total);
         }
 
