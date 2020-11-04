@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/config_menu_Item"
-        android:icon="@drawable/gear_icon"
+        android:icon="@android:drawable/ic_menu_manage"
         android:title="@string/config_item"
         android:visible="true"
         app:showAsAction="always" />

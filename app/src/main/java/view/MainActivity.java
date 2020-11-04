@@ -3,27 +3,37 @@ package view;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.blackjack.R;
 
+import controller.BlackJack;
+import controller.EmptyDeckException;
+
 public class MainActivity extends AppCompatActivity {
+
+    private BlackJack blackJack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Commenter blackjack console lorsque inutile
-        new BlackJackConsole();
-
-        // On met le clickHandler pour le bouton d'options en haut à droite
-
+        // new BlackJackConsole();
+        try {
+            blackJack = new BlackJack();
+        } catch (EmptyDeckException ex){
+            // On passe silencieusement l'exception car impossible de l'obtenir au début
+        }
     }
 
     private void addToPanel(LinearLayout  lay, String token){
@@ -43,6 +53,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
+        switch (item.getItemId()){
+            case R.id.menu_item_en_lang:
+                return true;
+            case R.id.menu_item_fr_lang:
+                return true;
+            case R.id.config_menu_Item:
+                AlertDialog.Builder diag = new AlertDialog.Builder(this);
+                diag.setTitle(R.string.DialogBoxTitle);
+                diag.setPositiveButton(R.string.ValidateChoiceDialog, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                diag.setNegativeButton(R.string.ResetChoiceDialog,null);
+
+                diag.setView(R.layout.dialog_layout);
+                diag.show();
+                return true;
+
+
+
+            default:
+                return false;
+        }
     }
 }
