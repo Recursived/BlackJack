@@ -59,6 +59,10 @@ public class Hand {
         return max;
     }
 
+    public List<Card> getCardList(){
+        return cardList;
+    }
+
     @Override
     public String toString() {
         // Affichage des cartes

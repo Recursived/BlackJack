@@ -1,5 +1,10 @@
 package controller;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import model.Card;
+
 public class BlackJack {
 
     private Deck deck;
@@ -7,22 +12,24 @@ public class BlackJack {
     private Hand bankHand;
     public int somme;
     public boolean gameFinished;
+    public int nbDeck;
 
     public BlackJack() throws EmptyDeckException {
-        reset(3,3000);
+        this(3,3000);
     }
 
     public BlackJack(int nbDeck,int somme) throws EmptyDeckException {
-        reset(nbDeck,somme);
+        this.nbDeck = nbDeck;
+        this.somme = somme;
+        reset();
     }
 
-    public void reset(int nbDeck,int somme) throws EmptyDeckException {
+    public void reset() throws EmptyDeckException {
         //Initialisation dans le reset pour réduire le nombre de ligne, et pas de reset dans le Deck, à revoir
         deck = new Deck(nbDeck);
         playerHand = new Hand();
         bankHand = new Hand();
         gameFinished = false;
-        this.somme = somme;
 
         playerHand.add(deck.draw());
         playerHand.add(deck.draw());
@@ -43,6 +50,14 @@ public class BlackJack {
 
     public int getBankBest(){
         return bankHand.best();
+    }
+
+    public List<Card> getPlayerCardList(){
+        return new LinkedList<Card>(playerHand.getCardList());
+    }
+
+    public List<Card> getBankCardList(){
+        return new LinkedList<Card>(bankHand.getCardList());
     }
 
     public boolean isPlayerWinner(){
