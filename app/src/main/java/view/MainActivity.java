@@ -2,20 +2,29 @@ package view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.blackjack.R;
+
+import org.w3c.dom.Text;
 
 import controller.BlackJack;
 import controller.EmptyDeckException;
@@ -162,23 +171,55 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_item_fr_lang:
                 return true;
             case R.id.config_menu_Item:
-                AlertDialog.Builder diag = new AlertDialog.Builder(this);
-                diag.setView(R.layout.dialog_layout);
-                diag.setTitle(R.string.DialogBoxTitle);
-                diag.setPositiveButton(R.string.ValidateChoiceDialog, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                diag.setNegativeButton(R.string.ResetChoiceDialog,null);
-                diag.show();
+                configDialog();
                 return true;
-
-
-
             default:
                 return false;
         }
+    }
+
+    public void configDialog(){
+        final Context context = getApplicationContext();
+        AlertDialog.Builder diag = new AlertDialog.Builder(this);
+        diag.setTitle(R.string.DialogBoxTitle);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View configView = inflater.inflate(R.layout.dialog_layout, null);
+        final RadioGroup rg = configView.findViewById(R.id.radioBgGroup);
+
+        final EditText nbDeck = configView.findViewById(R.id.montanTextview);
+
+        diag.setView(configView);
+        final ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
+
+        diag.setPositiveButton(R.string.ValidateChoiceDialog, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String toastText="Background: ";
+                if(rg.getCheckedRadioButtonId() == R.id.greenBgButton){
+                    mainLayout.setBackgroundColor(Color.parseColor("#00574A"));
+                    toastText+= getResources().getString(R.string.GreenBackgroundchoice);
+                }
+                if(rg.getCheckedRadioButtonId() == R.id.blackBgButton){
+                    mainLayout.setBackgroundColor(Color.parseColor("#3A3939"));
+                    toastText+= getResources().getString(R.string.DarkBackgroundchoice);
+                }
+                try{
+                    int valueNbDeck = Integer.parseInt(nbDeck.getText().toString());
+                    blackJack.setNbDeck(valueNbDeck);
+                    toastText+= " nbDeck: "+valueNbDeck;
+                }catch (Exception e){ toastText+= "nbDeck inchangé"; }
+                Toast.makeText(context,toastText,Toast.LENGTH_LONG).show();
+                onReset();
+            }
+        });
+        diag.setNegativeButton(R.string.ResetChoiceDialog,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(context,getResources().getString(R.string.ResetChoiceDialog),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        diag.show();
     }
 }

@@ -12,15 +12,15 @@ public class BlackJack {
     private Hand bankHand;
     public int somme;
     public boolean gameFinished;
-    public int nbDeck;
+    private int nbDeck;
 
     public BlackJack() throws EmptyDeckException {
         this(3,3000);
     }
 
     public BlackJack(int nbDeck,int somme) throws EmptyDeckException {
-        this.nbDeck = nbDeck;
         this.somme = somme;
+        this.nbDeck=nbDeck;
         reset();
     }
 
@@ -84,6 +84,10 @@ public class BlackJack {
             bankHand.add(deck.draw());
         }
         gameFinished = true;
+    }
+
+    public void setNbDeck(int nbDeck){
+        this.nbDeck=nbDeck;
     }
 
 }
