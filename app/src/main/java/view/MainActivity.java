@@ -91,20 +91,29 @@ public class MainActivity extends AppCompatActivity {
     private void onReset(){
         try {
             blackJack.reset();
+            drawButton.setEnabled(true);
+            bankLastTurnButton.setEnabled(true);
         } catch (EmptyDeckException e) {
             EmptyDeckError();
         }
         updatePlayerPanel();
         updateBankPanel();
-        drawButton.setEnabled(true);
-        bankLastTurnButton.setEnabled(true);
     }
 
     private void EmptyDeckError(){
         new AlertDialog.Builder(this)
                 .setTitle("EmptyDeckError")
                 .setMessage("Le deck est vide")
+                .setPositiveButton(R.string.RefillDeck, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        blackJack.setNbDeck(blackJack.getNbDeck());
+                        onReset();
+                    }
+                })
                 .show();
+        drawButton.setEnabled(false);
+        bankLastTurnButton.setEnabled(false);
     }
 
     private void addToPanel(LinearLayout  lay, String token){
@@ -188,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         final RadioGroup rg = configView.findViewById(R.id.radioBgGroup);
 
         final EditText nbDeck = configView.findViewById(R.id.montanTextview);
+        nbDeck.setText(""+blackJack.getNbDeck());
 
         diag.setView(configView);
         final ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
@@ -208,7 +218,10 @@ public class MainActivity extends AppCompatActivity {
                     int valueNbDeck = Integer.parseInt(nbDeck.getText().toString());
                     blackJack.setNbDeck(valueNbDeck);
                     toastText+= " nbDeck: "+valueNbDeck;
-                }catch (Exception e){ toastText+= "nbDeck inchangé"; }
+                }catch (Exception e){
+                    blackJack.setNbDeck(blackJack.getNbDeck());
+                    toastText+= "nbDeck inchangé";
+                }
                 Toast.makeText(context,toastText,Toast.LENGTH_LONG).show();
                 onReset();
             }

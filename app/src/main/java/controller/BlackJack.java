@@ -21,12 +21,12 @@ public class BlackJack {
     public BlackJack(int nbDeck,int somme) throws EmptyDeckException {
         this.somme = somme;
         this.nbDeck=nbDeck;
+        deck = new Deck(this.nbDeck);
         reset();
     }
 
     public void reset() throws EmptyDeckException {
         //Initialisation dans le reset pour réduire le nombre de ligne, et pas de reset dans le Deck, à revoir
-        deck = new Deck(nbDeck);
         playerHand = new Hand();
         bankHand = new Hand();
         gameFinished = false;
@@ -80,7 +80,7 @@ public class BlackJack {
     }
 
     public void bankLastTurn() throws EmptyDeckException {
-        while(bankHand.best()<playerHand.best() && bankHand.best()!=0 && playerHand.best()!=0){
+        while(bankHand.best()<playerHand.best() && (bankHand.best()!=playerHand.best() || bankHand.best()<17) && bankHand.best()!=0 && playerHand.best()!=0){
             bankHand.add(deck.draw());
         }
         gameFinished = true;
@@ -88,6 +88,11 @@ public class BlackJack {
 
     public void setNbDeck(int nbDeck){
         this.nbDeck=nbDeck;
+        deck = new Deck(this.nbDeck);
+    }
+
+    public int getNbDeck(){
+        return nbDeck;
     }
 
 }
