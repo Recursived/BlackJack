@@ -79,8 +79,12 @@ public class BlackJack {
         }
     }
 
+    public boolean variante(){
+        return bankHand.best()>=17 && bankHand.best()==playerHand.best();
+    }
+
     public void bankLastTurn() throws EmptyDeckException {
-        while(bankHand.best()<playerHand.best() && (bankHand.best()!=playerHand.best() || bankHand.best()<17) && bankHand.best()!=0 && playerHand.best()!=0){
+        while((bankHand.best()<=playerHand.best() && bankHand.best()!=0 && playerHand.best()!=0) && !variante()){
             bankHand.add(deck.draw());
         }
         gameFinished = true;
