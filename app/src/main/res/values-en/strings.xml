@@ -18,4 +18,9 @@
     <string name="RefillDeck">Refill the deck</string>
     <string name="menu_item_en_lang">English</string>
     <string name="menu_item_fr_lang">Français</string>
+    <string name="nbDeck">Number of 52 cards deck</string>
+    <string name="nbMontant">Initial amount</string>
+    <string name="PlayerAmmount">Your ammount: </string>
+    <string name="PlayerBet">Your bet: </string>
+    <string name="BetButton">Bet</string>
 </resources>

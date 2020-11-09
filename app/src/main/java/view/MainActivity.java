@@ -19,12 +19,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blackjack.R;
-
-import org.w3c.dom.Text;
 
 import controller.BlackJack;
 import controller.EmptyDeckException;
@@ -35,11 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private Button drawButton;
     private Button bankLastTurnButton;
     private Button resetButton;
+    private Button betButton;
 
     private LinearLayout playerLayout;
     private LinearLayout playerStatusLayout;
     private LinearLayout bankLayout;
     private LinearLayout bankStatusLayout;
+
+    private SeekBar betBar;
 
     private BlackJack blackJack;
 
@@ -60,12 +62,23 @@ public class MainActivity extends AppCompatActivity {
         bankLastTurnButton.setOnClickListener(new View.OnClickListener(){public void onClick(View view){ onBankLastTurn(); }});
         resetButton = findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener(){public void onClick(View view){ onReset(); }});
+        betButton = findViewById(R.id.betButton);
+        betButton.setOnClickListener(new View.OnClickListener(){public void onClick(View view){ onBetLastTurn(); }});
+
+        betBar = findViewById(R.id.betBar);
+        betBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                              @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { updateBetAmmount(); }
+                                              @Override public void onStartTrackingTouch(SeekBar seekBar) { }
+                                              @Override public void onStopTrackingTouch(SeekBar seekBar) { }
+                                          });
 
         playerLayout = findViewById(R.id.playerHand);
         bankLayout = findViewById(R.id.bankHand);
         playerStatusLayout = findViewById(R.id.playerStatusLayout);
         bankStatusLayout = findViewById(R.id.bankStatusLayout);
 
+        updateBetAmmount();
+        updateAmmount();
         updatePlayerPanel();
         updateBankPanel();
     }
@@ -88,14 +101,28 @@ public class MainActivity extends AppCompatActivity {
         updateBankPanel();
     }
 
+    private void onBetLastTurn(){
+        try {
+            blackJack.bankLastTurn();
+            blackJack.betResult(betBar.getProgress());
+        } catch (EmptyDeckException e) {
+            EmptyDeckError();
+        }
+        updateAmmount();
+        updateBankPanel();
+    }
+
     private void onReset(){
         try {
             blackJack.reset();
             drawButton.setEnabled(true);
             bankLastTurnButton.setEnabled(true);
+            betButton.setEnabled(true);
         } catch (EmptyDeckException e) {
             EmptyDeckError();
         }
+        updateBetAmmount();
+        updateAmmount();
         updatePlayerPanel();
         updateBankPanel();
     }
@@ -114,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 .show();
         drawButton.setEnabled(false);
         bankLastTurnButton.setEnabled(false);
+        betButton.setEnabled(false);
     }
 
     private void addToPanel(LinearLayout  lay, String token){
@@ -149,6 +177,23 @@ public class MainActivity extends AppCompatActivity {
         if(blackJack.isGameFinished()){ gameFinished();}
     }
 
+    private void updateAmmount(){
+        TextView playerTotalAmmount = findViewById(R.id.totalAmmountTextView);
+        playerTotalAmmount.setText(getResources().getText(R.string.PlayerAmmount) + " "+ blackJack.getSomme() + "$");
+    }
+
+    private void updateBetAmmount(){
+        TextView betAmmount = findViewById(R.id.betAmmountText);
+        int betAmmountRound = betBar.getProgress(); //FORCER UN PAS DE 10 SUR LA BARRE DES PARIS
+        if(betAmmountRound>0) {
+            betAmmountRound /= 10;
+            betAmmountRound *= 10;
+        }
+        betAmmountRound=Integer.min(blackJack.getSomme(),betAmmountRound); //NE PEUT PAS DEPENSER PLUS QU'IL N'A D'ARGENT
+        betBar.setProgress(betAmmountRound);
+        betAmmount.setText(getResources().getText(R.string.PlayerBet) + " " + betBar.getProgress() + "$");
+    }
+
     private void gameFinished(){
         if(!blackJack.isBankWinner() && blackJack.isPlayerWinner()){
             addToPanel(playerStatusLayout,"winner");
@@ -164,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         }
         drawButton.setEnabled(false);
         bankLastTurnButton.setEnabled(false);
+        betButton.setEnabled(false);
     }
 
     @Override
@@ -199,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
         final EditText nbDeck = configView.findViewById(R.id.montanTextview);
         nbDeck.setText(""+blackJack.getNbDeck());
 
+        final EditText nbMontant = configView.findViewById(R.id.montantMiseEdit);
+        nbMontant.setText(""+blackJack.getSomme());
+
         diag.setView(configView);
         final ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
 
@@ -222,7 +271,14 @@ public class MainActivity extends AppCompatActivity {
                     blackJack.setNbDeck(blackJack.getNbDeck());
                     toastText+= "nbDeck inchangé";
                 }
+                try{
+                    int valueSomme = Integer.parseInt(nbMontant.getText().toString());
+                    blackJack.setSomme(valueSomme);
+                }catch (Exception e){
+                    blackJack.setSomme(blackJack.getSomme());
+                }
                 Toast.makeText(context,toastText,Toast.LENGTH_LONG).show();
+                betBar.setProgress(0);
                 onReset();
             }
         });

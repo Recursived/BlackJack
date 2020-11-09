@@ -35,11 +35,39 @@
         android:id="@+id/montanTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:ems="10"
         android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/nbDeckText"
+        app:layout_constraintStart_toStartOf="@+id/nbDeckText"
+        app:layout_constraintTop_toBottomOf="@+id/nbDeckText" />
+
+    <EditText
+        android:id="@+id/montantMiseEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/montantText"
+        app:layout_constraintStart_toStartOf="@+id/montantText"
+        app:layout_constraintTop_toBottomOf="@+id/montantText" />
+
+    <TextView
+        android:id="@+id/nbDeckText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/nbDeck"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioBgGroup" />
+
+    <TextView
+        android:id="@+id/montantText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/nbMontant"
+        app:layout_constraintEnd_toEndOf="@+id/montanTextview"
+        app:layout_constraintStart_toStartOf="@+id/montanTextview"
+        app:layout_constraintTop_toBottomOf="@+id/montanTextview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

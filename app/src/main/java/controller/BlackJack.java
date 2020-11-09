@@ -10,12 +10,12 @@ public class BlackJack {
     private Deck deck;
     private Hand playerHand;
     private Hand bankHand;
-    public int somme;
+    private int somme;
     public boolean gameFinished;
     private int nbDeck;
 
     public BlackJack() throws EmptyDeckException {
-        this(3,3000);
+        this(3,5000);
     }
 
     public BlackJack(int nbDeck,int somme) throws EmptyDeckException {
@@ -90,6 +90,16 @@ public class BlackJack {
         gameFinished = true;
     }
 
+    public void betResult(int ammount) throws EmptyDeckException {
+        if(isPlayerWinner() && !isBankWinner()){
+            if(getPlayerBest() == 21) this.somme+=ammount;
+            this.somme+=ammount;
+        }
+        else if(!isPlayerWinner() && isBankWinner()){
+            this.somme -= ammount;
+        }
+    }
+
     public void setNbDeck(int nbDeck){
         this.nbDeck=nbDeck;
         deck = new Deck(this.nbDeck);
@@ -97,6 +107,14 @@ public class BlackJack {
 
     public int getNbDeck(){
         return nbDeck;
+    }
+
+    public int getSomme(){
+        return somme;
+    }
+
+    public void setSomme(int somme){
+        this.somme = somme;
     }
 
 }

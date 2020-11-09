@@ -90,6 +90,18 @@
         app:layout_constraintTop_toTopOf="@+id/bankStatusLayout" />
 
     <TextView
+        android:id="@+id/totalAmmountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PlayerAmmount"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/playerTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playerTitle"
+        app:layout_constraintTop_toTopOf="@+id/playerTitle" />
+
+    <TextView
         android:id="@+id/playerScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -100,6 +112,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/playerStatusLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/playerStatusLayout" />
+
+    <TextView
+        android:id="@+id/betAmmountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PlayerBet"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/betBar"
+        app:layout_constraintEnd_toEndOf="@+id/betBar"
+        app:layout_constraintStart_toStartOf="@+id/betBar"
+        app:layout_constraintTop_toTopOf="@+id/betButton" />
 
     <LinearLayout
         android:id="@+id/playerHand"
@@ -131,5 +155,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bankScore"
         app:layout_constraintTop_toBottomOf="@+id/bankHand"></LinearLayout>
+
+    <SeekBar
+        android:id="@+id/betBar"
+        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+        android:layout_width="166dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:indeterminate="false"
+        android:max="300"
+        android:progress="0"
+        app:layout_constraintBottom_toBottomOf="@+id/betButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/betButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/BetButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/betBar"
+        app:layout_constraintTop_toBottomOf="@+id/playerStatusLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

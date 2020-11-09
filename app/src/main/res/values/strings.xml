@@ -17,4 +17,9 @@
     <string name="RefillDeck">Remplir le deck</string>
     <string name="menu_item_en_lang">English</string>
     <string name="menu_item_fr_lang">Français</string>
+    <string name="nbDeck">Nombre de jeux de 52 cartes</string>
+    <string name="nbMontant">Montant initial</string>
+    <string name="PlayerAmmount">Votre montant :</string>
+    <string name="PlayerBet">Votre mise :</string>
+    <string name="BetButton">Miser</string>
 </resources>
