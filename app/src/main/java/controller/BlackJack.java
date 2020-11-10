@@ -1,11 +1,14 @@
 package controller;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import model.Card;
 
-public class BlackJack {
+public class BlackJack implements Parcelable {
 
     private Deck deck;
     private Hand playerHand;
@@ -115,6 +118,33 @@ public class BlackJack {
 
     public void setSomme(int somme){
         this.somme = somme;
+    }
+
+    //--------------------- PARCELABLE POUR SAVE L'OBJET DANS L'INSTANCE --------------//
+
+    private int mData;
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(mData);
+    }
+
+    public static final Parcelable.Creator<BlackJack> CREATOR
+            = new Parcelable.Creator<BlackJack>() {
+        public BlackJack createFromParcel(Parcel in) {
+            return new BlackJack(in);
+        }
+
+        public BlackJack[] newArray(int size) {
+            return new BlackJack[size];
+        }
+    };
+
+    private BlackJack(Parcel in) {
+        mData = in.readInt();
     }
 
 }

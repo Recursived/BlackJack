@@ -45,16 +45,19 @@ public class MainActivity extends AppCompatActivity {
 
     private SeekBar betBar;
 
+    private int currentBg;
+
     private BlackJack blackJack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
         // new BlackJackConsole();
         try {
-            blackJack = new BlackJack();
+            if(savedInstanceState==null) blackJack = new BlackJack();
+            else blackJack = savedInstanceState.getParcelable("blackJack");
         } catch (EmptyDeckException ex){
             // On passe silencieusement l'exception car impossible de l'obtenir au début
         }
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         bankLayout = findViewById(R.id.bankHand);
         playerStatusLayout = findViewById(R.id.playerStatusLayout);
         bankStatusLayout = findViewById(R.id.bankStatusLayout);
+
+        currentBg=0;
 
         updateBetAmmount();
         updateAmmount();
@@ -198,6 +203,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gameFinished(){
+        playerStatusLayout.removeAllViews();
+        bankStatusLayout.removeAllViews();
+        if(blackJack.getPlayerBest()==21){ addToPanel(playerStatusLayout,"blackjack");}
+        if(blackJack.getBankBest()==21){addToPanel(bankStatusLayout,"blackjack");}
         if(!blackJack.isBankWinner() && blackJack.isPlayerWinner()){
             addToPanel(playerStatusLayout,"winner");
             addToPanel(bankStatusLayout,"looser");
@@ -260,10 +269,12 @@ public class MainActivity extends AppCompatActivity {
                 String toastText="Background: ";
                 if(rg.getCheckedRadioButtonId() == R.id.greenBgButton){
                     mainLayout.setBackgroundColor(Color.parseColor("#00574A"));
+                    currentBg=0;
                     toastText+= getResources().getString(R.string.GreenBackgroundchoice);
                 }
                 if(rg.getCheckedRadioButtonId() == R.id.blackBgButton){
                     mainLayout.setBackgroundColor(Color.parseColor("#3A3939"));
+                    currentBg=1;
                     toastText+= getResources().getString(R.string.DarkBackgroundchoice);
                 }
                 try{
@@ -299,12 +310,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt("betBar",betBar.getProgress());
+        outState.putParcelable("blackJack",blackJack);
+        outState.putInt("Bg",currentBg);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
         betBar.setProgress(savedInstanceState.getInt("betBar"));
+        currentBg = savedInstanceState.getInt("Bg");
+        if(currentBg == 1){
+            ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
+            mainLayout.setBackgroundColor(Color.parseColor("#3A3939"));
+        }
     }
 
 }
