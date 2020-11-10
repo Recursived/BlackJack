@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,6 +30,8 @@ import android.widget.Toast;
 
 import com.example.blackjack.R;
 
+import java.util.Locale;
+
 import controller.BlackJack;
 import controller.EmptyDeckException;
 import model.Card;
@@ -44,14 +49,16 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout bankStatusLayout;
 
     private SeekBar betBar;
+    private String language;
 
-    private int currentBg;
+    private int currentBg; //Mise en memoire de la couleur du background pour le changement d'orientation
 
     private BlackJack blackJack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateLanguage(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // new BlackJackConsole();
@@ -234,8 +241,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_item_en_lang:
+                language="en";
+                recreate();
                 return true;
             case R.id.menu_item_fr_lang:
+                language="fr";
+                recreate();
                 return true;
             case R.id.config_menu_Item:
                 configDialog();
@@ -312,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("betBar",betBar.getProgress());
         outState.putParcelable("blackJack",blackJack);
         outState.putInt("Bg",currentBg);
+        outState.putString("Language",language);
     }
 
     @Override
@@ -319,9 +331,22 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         betBar.setProgress(savedInstanceState.getInt("betBar"));
         currentBg = savedInstanceState.getInt("Bg");
-        if(currentBg == 1){
+        if(currentBg == 1){ //est ce que le fond etait gris ?
             ConstraintLayout mainLayout = findViewById(R.id.mainLayout);
             mainLayout.setBackgroundColor(Color.parseColor("#3A3939"));
+        }
+        language = savedInstanceState.getString("Language");
+    }
+
+    private void updateLanguage(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            language = savedInstanceState.getString("Language");
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = getBaseContext().getResources().getConfiguration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
         }
     }
 

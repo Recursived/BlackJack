@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BlackJack EN</string>
+    <string name="app_name">BlackJack</string>
     <string name="config_item">Options</string>
     <string name="bankTitle">Bank</string>
     <string name="playerTitle">Player</string>
