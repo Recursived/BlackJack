@@ -348,6 +348,9 @@ public class MainActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config,
                     getBaseContext().getResources().getDisplayMetrics());
         }
+        else{
+            language=Locale.getDefault().getLanguage();
+        }
     }
 
 }
